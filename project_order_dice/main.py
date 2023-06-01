@@ -1,7 +1,6 @@
 import random
 
 names = ["Hannes", "Jessica", "Henning", "Mathis", "Sarah", "Steffen"]
-not_present = []
 
 while True:
     not_present = input("Enter the names : ")
