@@ -5,7 +5,7 @@ from functions import enter_names
 from functions import generate_list
 
 class TestInputFunction(unittest.TestCase):
-    def test_input(self):
+    def test_enter_names(self):
         names = ["Hannes", "Jessica", "Henning", "Mathis", "Sarah", "Steffen"]
         mock_input = ["Hannes", "Jessica", "Henning", "Charlie", ""]
         expected_names = ["Mathis", "Sarah", "Steffen"]
