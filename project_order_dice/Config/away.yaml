@@ -1,0 +1,12 @@
+- name: Henning
+  is_away: True
+- name: Steffen
+  is_away: false
+- name: Jessica
+  is_away: false
+- name: Sarah
+  is_away: false
+- name: Hannes
+  is_away: false
+- name: Mathis
+  is_away: false
