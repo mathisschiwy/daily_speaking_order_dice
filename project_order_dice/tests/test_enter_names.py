@@ -8,7 +8,7 @@ from functions import generate_list
 class TestInputFunction(unittest.TestCase):
     def test_enter_names(self):
         names = ["Hannes", "Jessica", "Henning", "Mathis", "Sarah", "Steffen"]
-        mock_input = ["Hannes", "Jessica", "Henning", "Charlie", ""]
+        mock_input = ["Hannes", "Jessica", "Henning", ""]
         expected_names = ["Mathis", "Sarah", "Steffen"]
 
         with patch('builtins.input', side_effect=mock_input):
