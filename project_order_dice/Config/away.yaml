@@ -1,5 +1,5 @@
 - name: Henning
-  is_away: True
+  is_away: false
 - name: Steffen
   is_away: false
 - name: Jessica
