@@ -1,43 +1,42 @@
 import unittest
 from unittest.mock import patch
 from io import StringIO
-from functions import exclude_enter_names
+
+import functions
 from functions import generate_list
 
 
 class TestInputFunction(unittest.TestCase):
     def test_enter_names(self):
-        names = ["Hannes", "Jessica", "Henning", "Mathis", "Sarah", "Steffen"]
-        mock_input = ["Hannes", "Jessica", "Henning", ""]
-        expected_names = ["Mathis", "Sarah", "Steffen"]
+        mock_input = ["Hannes", "Jessica", ""]
+        expected_names = ["Henning", "Steffen", "Sarah", "Mathis"]
 
         with patch('builtins.input', side_effect=mock_input):
-            exclude_enter_names(names)
+            filtered_names = functions.exclude_enter_names()
 
-            self.assertEqual(names, expected_names)
+            self.assertEqual(filtered_names, expected_names)
 
     def test_exclude_enter_names(self):
-        names = ["Hannes", "Jessica", "Henning", "Mathis", "Sarah", "Steffen"]
         false_name = ["Leon", ""]
-        expected_output = "This name is not in the List!\n Enter a name from the following list : Hannes, Jessica, Henning, Mathis, Sarah, Steffen"
+        expected_output = "This name is not in the List!\n Enter a name from the following list : Henning, Steffen, Jessica, Sarah, Hannes, Mathis"
 
         with patch('builtins.input', side_effect=false_name), \
                 patch('sys.stdout', new_callable=StringIO) as mock_stdout:
 
-            exclude_enter_names(names)
+            functions.exclude_enter_names()
 
             self.assertEqual(mock_stdout.getvalue().strip(), expected_output)
 
 
 class TestGenerateListFunction(unittest.TestCase):
     def test_generate_list_output(self):
-        names = ["Hannes", "Jessica", "Henning", "Mathis", "Sarah", "Steffen"]
+        filtered_names = ["Steffen", "Jessica", "Sarah", "Hannes", "Mathis"]
 
-        with patch('random.sample', return_value=names), \
+        with patch('random.sample', return_value=filtered_names), \
                 patch('sys.stdout', new_callable=StringIO) as mock_stdout, \
-                patch("random.choice", return_value=names):
-            expected_output = "\n".join(names)
+                patch("random.choice", return_value=filtered_names):
+            expected_output = "\n".join(filtered_names)
 
-            generate_list(names)
+            generate_list(filtered_names)
 
             self.assertEqual(mock_stdout.getvalue().strip(), expected_output)

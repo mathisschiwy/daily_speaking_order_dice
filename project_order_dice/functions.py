@@ -1,38 +1,79 @@
 import random
 import yaml
 import os
-names = ["Hannes", "Jessica", "Henning", "Mathis", "Sarah", "Steffen"]
-all_names = ["Hannes", "Jessica", "Henning", "Mathis", "Sarah", "Steffen"]
+import datetime
+
 # Function to exclude the names of people who are not present.
-def exclude_enter_names(names):
+def exclude_enter_names():
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_directory, "Config/away.yaml")
+    with open(file_path, "r") as config:
+        data = yaml.safe_load(config)
+        filtered_names = [person["name"] for person in data["away"] if not person["is_away"]]
+
+        today = datetime.date.today()
+        weekday = today.isoweekday()
+
+# Check weekdays
+    try:
+        if weekday == 1:
+            monday_names = data.get("Monday", [])
+            for names in monday_names:
+                filtered_names = [name for name in filtered_names if name not in names.get("names", [])]
+        elif weekday == 2:
+            tuesday_names = data.get("Tuesday", [])
+            for names in tuesday_names:
+                filtered_names = [name for name in filtered_names if name not in names.get("names", [])]
+        elif weekday == 3:
+            wednesday_names = data.get("Wednesday", [])
+            for names in wednesday_names:
+                filtered_names = [name for name in filtered_names if name not in names.get("names", [])]
+        elif weekday == 4:
+            thursday_names = data.get("Thursday", [])
+            for names in thursday_names:
+                filtered_names = [name for name in filtered_names if name not in names.get("names", [])]
+        elif weekday == 5:
+            friday_names = data.get("Friday", [])
+            for names in friday_names:
+                filtered_names = [name for name in filtered_names if name not in names.get("names", [])]
+    except TypeError:
+        pass
+
+# Check vacation
+        for period in data["vacation"]:
+            try:
+                start_date = datetime.datetime.strptime(str(period["start_date"]), "%Y-%m-%d").date()
+                end_date = datetime.datetime.strptime(str(period["end_date"]), "%Y-%m-%d").date()
+
+                if start_date <= today <= end_date:
+                    filtered_names = [name for name in filtered_names if name not in period["names"]]
+            except ValueError:
+                continue
+
+# Exclude names
     while True:
         try:
             not_present = input("Who is not present? :")
-            if not_present != "":
-                names.remove(not_present)
+            if not_present in filtered_names:
+                filtered_names.remove(not_present)
             elif not_present == "":
                 break
-        except:
-            print("This name is not in the List!\n Enter a name from the following list : "+", ".join(all_names))
+            elif not_present not in filtered_names:
+                raise ValueError
+        except ValueError:
+            print("This name is not in the List!\n Enter a name from the following list : " + ", ".join(filtered_names))
 
-# Generate the speaking order.
-def generate_list(names):
+    return filtered_names
 
- #Open yaml file
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(current_directory, "Config/away.yaml")
+# Generate the speaking order
+def generate_list(filtered_names):
 
-    with open(file_path, "r") as config:
-        data = yaml.safe_load(config)
-
-#Filter the List
-        filtered_names = [person["name"] for person in data if not person.get("is_away")]
-
-#generate the random order
+# generate the random order
     name_star = random.choice(filtered_names)
+
     for name in random.sample(filtered_names, len(filtered_names)):
         if name == name_star:
             print("*", name)
         else:
             print(name)
-    return filtered_names
+
