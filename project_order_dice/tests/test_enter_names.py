@@ -1,3 +1,4 @@
+
 import unittest
 from unittest.mock import patch
 from io import StringIO
@@ -22,7 +23,6 @@ class TestInputFunction(unittest.TestCase):
 
         with patch('builtins.input', side_effect=false_name), \
                 patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-
             functions.exclude_enter_names()
 
             self.assertEqual(mock_stdout.getvalue().strip(), expected_output)
@@ -40,3 +40,5 @@ class TestGenerateListFunction(unittest.TestCase):
             generate_list(filtered_names)
 
             self.assertEqual(mock_stdout.getvalue().strip(), expected_output)
+
+

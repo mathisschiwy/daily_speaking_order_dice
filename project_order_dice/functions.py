@@ -3,6 +3,7 @@ import yaml
 import os
 import datetime
 
+
 # Function to exclude the names of people who are not present.
 def exclude_enter_names():
     current_directory = os.path.dirname(os.path.abspath(__file__))
@@ -14,7 +15,7 @@ def exclude_enter_names():
         today = datetime.date.today()
         weekday = today.isoweekday()
 
-# Check weekdays
+    # Check weekdays
     try:
         if weekday == 1:
             monday_names = data.get("Monday", [])
@@ -39,7 +40,7 @@ def exclude_enter_names():
     except TypeError:
         pass
 
-# Check vacation
+        # Check vacation
         for period in data["vacation"]:
             try:
                 start_date = datetime.datetime.strptime(str(period["start_date"]), "%Y-%m-%d").date()
@@ -50,7 +51,7 @@ def exclude_enter_names():
             except ValueError:
                 continue
 
-# Exclude names
+    # Exclude names
     while True:
         try:
             not_present = input("Who is not present? :")
@@ -65,10 +66,10 @@ def exclude_enter_names():
 
     return filtered_names
 
+
 # Generate the speaking order
 def generate_list(filtered_names):
-
-# generate the random order
+    # generate the random order
     name_star = random.choice(filtered_names)
 
     for name in random.sample(filtered_names, len(filtered_names)):
@@ -77,3 +78,10 @@ def generate_list(filtered_names):
         else:
             print(name)
 
+
+def read_away_yaml():
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_directory, "Config/away.yaml")
+    with open(file_path, "r") as config:
+        data = yaml.safe_load(config)
+        return data

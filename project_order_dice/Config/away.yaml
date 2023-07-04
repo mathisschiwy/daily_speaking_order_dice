@@ -12,6 +12,8 @@ away:
     is_away: false
   - name: Mathis
     is_away: false
+  - name: Adrian
+    is_away: false
 
 # Vacation dates only in this format YYYY-MM-DD (example 2023-06-26).
 vacation:
