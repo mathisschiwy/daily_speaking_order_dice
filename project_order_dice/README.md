@@ -1,4 +1,6 @@
 # Random order dice
+[![forthebadge made-with-python](http://ForTheBadge.com/images/badges/made-with-python.svg)](https://www.python.org/)
+
 A tool to create a randomized speaking and board sharing order for agile daily meetings.
 
 ## Requirements:
