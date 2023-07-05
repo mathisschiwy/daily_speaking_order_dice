@@ -7,10 +7,10 @@ import datetime
 # Function to exclude the names of people who are not present.
 def exclude_enter_names():
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(current_directory, "Config/away.yaml")
+    file_path = os.path.join(current_directory, "config.yaml")
     with open(file_path, "r") as config:
         data = yaml.safe_load(config)
-        filtered_names = [person["name"] for person in data["away"] if not person["is_away"]]
+        filtered_names = [person["name"] for person in data["team_members"] if not person["is_away"]]
 
         today = datetime.date.today()
         weekday = today.isoweekday()
@@ -47,7 +47,7 @@ def exclude_enter_names():
                 end_date = datetime.datetime.strptime(str(period["end_date"]), "%Y-%m-%d").date()
 
                 if start_date <= today <= end_date:
-                    filtered_names = [name for name in filtered_names if name not in period["names"]]
+                    filtered_names = [name for name in filtered_names if name not in period["name"]]
             except ValueError:
                 continue
 
@@ -81,7 +81,7 @@ def generate_list(filtered_names):
 
 def read_away_yaml():
     current_directory = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(current_directory, "Config/away.yaml")
+    file_path = os.path.join(current_directory, "config.yaml")
     with open(file_path, "r") as config:
         data = yaml.safe_load(config)
         return data

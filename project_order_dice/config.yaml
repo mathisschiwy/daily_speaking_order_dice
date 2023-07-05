@@ -1,5 +1,5 @@
 # If a person is away for a longer period of time please put them on is-away: True.
-away:
+team_members:
   - name: Henning
     is_away: false
   - name: Steffen
@@ -19,7 +19,7 @@ away:
 vacation:
   - start_date:
     end_date:
-    names:
+    name:
 
 # Here you can exclude people depending on days of the week.
 Monday:
