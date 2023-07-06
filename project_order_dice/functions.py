@@ -6,70 +6,87 @@ import datetime
 
 # Function to exclude the names of people who are not present.
 def exclude_enter_names():
+    """
+    Build the list of participating names for today/now, taking into account
+    the configuration and asking the user interactively for people who are
+    not there today.
+
+    :return:
+    """
     current_directory = os.path.dirname(os.path.abspath(__file__))
     file_path = os.path.join(current_directory, "config.yaml")
     with open(file_path, "r") as config:
         data = yaml.safe_load(config)
-        filtered_names = [person["name"] for person in data["team_members"] if not person["is_away"]]
 
-        today = datetime.date.today()
-        weekday = today.isoweekday()
+    todays_participants = list()
+
+    team_members_info = data["team_members"]
+
+    for team_member_info in team_members_info:
+        if not team_member_info["is_away"]:
+            todays_participants.append(team_member_info["name"])
+
+    today = datetime.date.today()
+    weekday = today.isoweekday()
+
+    # names of participants for current_day
+    current_day_excluded_names = None
 
     # Check weekdays
-    try:
-        if weekday == 1:
-            monday_names = data.get("Monday", [])
-            for names in monday_names:
-                filtered_names = [name for name in filtered_names if name not in names.get("names", [])]
-        elif weekday == 2:
-            tuesday_names = data.get("Tuesday", [])
-            for names in tuesday_names:
-                filtered_names = [name for name in filtered_names if name not in names.get("names", [])]
-        elif weekday == 3:
-            wednesday_names = data.get("Wednesday", [])
-            for names in wednesday_names:
-                filtered_names = [name for name in filtered_names if name not in names.get("names", [])]
-        elif weekday == 4:
-            thursday_names = data.get("Thursday", [])
-            for names in thursday_names:
-                filtered_names = [name for name in filtered_names if name not in names.get("names", [])]
-        elif weekday == 5:
-            friday_names = data.get("Friday", [])
-            for names in friday_names:
-                filtered_names = [name for name in filtered_names if name not in names.get("names", [])]
-    except TypeError:
-        pass
+    if weekday == 1:
+        current_day_excluded_names = data.get("Monday", [])
+    elif weekday == 2:
+        current_day_excluded_names = data.get("Tuesday", [])
+    elif weekday == 3:
+        current_day_excluded_names = data.get("Wednesday", [])
+    elif weekday == 4:
+        current_day_excluded_names = data.get("Thursday", [])
+    elif weekday == 5:
+        current_day_excluded_names = data.get("Friday", [])
+    else:
+        print("No work day.")
 
-        # Check vacation
-        for period in data["vacation"]:
-            try:
-                start_date = datetime.datetime.strptime(str(period["start_date"]), "%Y-%m-%d").date()
-                end_date = datetime.datetime.strptime(str(period["end_date"]), "%Y-%m-%d").date()
+    for name in todays_participants:
+        if name in current_day_excluded_names:
+            todays_participants.remove(name)
 
-                if start_date <= today <= end_date:
-                    filtered_names = [name for name in filtered_names if name not in period["name"]]
-            except ValueError:
-                continue
+    # Check vacation
+    for period in data["vacation"]:
+        try:
+            start_date = datetime.datetime.strptime(str(period["start_date"]), "%Y-%m-%d").date()
+            end_date = datetime.datetime.strptime(str(period["end_date"]), "%Y-%m-%d").date()
 
-    # Exclude names
+            if start_date <= today <= end_date:
+                todays_participants = [name for name in todays_participants if name not in period["name"]]
+        except ValueError:
+            continue
+
+
+    # Exclude names interactively
     while True:
         try:
             not_present = input("Who is not present? :")
-            if not_present in filtered_names:
-                filtered_names.remove(not_present)
+            if not_present in todays_participants:
+                todays_participants.remove(not_present)
             elif not_present == "":
                 break
-            elif not_present not in filtered_names:
+            elif not_present not in todays_participants:
                 raise ValueError
         except ValueError:
-            print("This name is not in the List!\n Enter a name from the following list : " + ", ".join(filtered_names))
+            print("This name is not in the List!\n Enter a name from the following list : " + ", ".join(todays_participants))
 
-    return filtered_names
+    return todays_participants
 
 
 # Generate the speaking order
 def generate_list(filtered_names):
-    # generate the random order
+    """
+    generate the random order of all names given as input,
+    and mark the Screensharing name with a star.
+
+    :param filtered_names:
+    :return:
+    """
     name_star = random.choice(filtered_names)
 
     for name in random.sample(filtered_names, len(filtered_names)):
