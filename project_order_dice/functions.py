@@ -5,7 +5,7 @@ import datetime
 
 
 # Function to exclude the names of people who are not present.
-def exclude_enter_names():
+def build_todays_participants():
     """
     Build the list of participating names for today/now, taking into account
     the configuration and asking the user interactively for people who are
@@ -52,15 +52,20 @@ def exclude_enter_names():
 
     # Check vacation
     for period in data["vacation"]:
-        try:
-            start_date = datetime.datetime.strptime(str(period["start_date"]), "%Y-%m-%d").date()
-            end_date = datetime.datetime.strptime(str(period["end_date"]), "%Y-%m-%d").date()
-
-            if start_date <= today <= end_date:
-                todays_participants = [name for name in todays_participants if name not in period["name"]]
-        except ValueError:
+        # If any of the fields is empty/none we skip this period entry
+        if period["start_date"] is None:
             continue
+        if period["end_date"] is None:
+            continue
+        if period["name"] is None:
+            continue
+        start_date = datetime.datetime.strptime(str(period["start_date"]), "%Y-%m-%d").date()
+        end_date = datetime.datetime.strptime(str(period["end_date"]), "%Y-%m-%d").date()
 
+        if start_date <= today <= end_date:
+            for name in todays_participants:
+                if name in period["name"]:
+                    todays_participants.remove(name)
 
     # Exclude names interactively
     while True:
@@ -73,7 +78,8 @@ def exclude_enter_names():
             elif not_present not in todays_participants:
                 raise ValueError
         except ValueError:
-            print("This name is not in the List!\n Enter a name from the following list : " + ", ".join(todays_participants))
+            print("This name is not in the List!\n Enter a name from the following list : " + ", ".join(
+                todays_participants))
 
     return todays_participants
 
