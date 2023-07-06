@@ -13,9 +13,9 @@ class TestInputFunction(unittest.TestCase):
         expected_names = ["Henning", "Steffen", "Sarah", "Mathis", "Adrian"]
 
         with patch('builtins.input', side_effect=mock_input):
-            filtered_names = functions.exclude_enter_names()
+            participants = functions.build_todays_participants()
 
-            self.assertEqual(filtered_names, expected_names)
+            self.assertEqual(participants, expected_names)
 
     def test_exclude_enter_names(self):
         false_name = ["Leon", ""]
@@ -23,7 +23,7 @@ class TestInputFunction(unittest.TestCase):
 
         with patch('builtins.input', side_effect=false_name), \
                 patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            functions.exclude_enter_names()
+            functions.build_todays_participants()
 
             self.assertEqual(mock_stdout.getvalue().strip(), expected_output)
 
