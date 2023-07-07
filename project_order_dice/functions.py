@@ -4,8 +4,16 @@ import os
 import datetime
 
 
+def read_away_yaml():
+    current_directory = os.path.dirname(os.path.abspath(__file__))
+    file_path = os.path.join(current_directory, "config.yaml")
+    with open(file_path, "r") as config:
+        data = yaml.safe_load(config)
+        return data
+
+
 # Function to exclude the names of people who are not present.
-def build_todays_participants():
+def build_todays_participants(data):
     """
     Build the list of participating names for today/now, taking into account
     the configuration and asking the user interactively for people who are
@@ -13,10 +21,6 @@ def build_todays_participants():
 
     :return:
     """
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(current_directory, "config.yaml")
-    with open(file_path, "r") as config:
-        data = yaml.safe_load(config)
 
     todays_participants = list()
 
@@ -67,7 +71,11 @@ def build_todays_participants():
                 if name in period["name"]:
                     todays_participants.remove(name)
 
-    # Exclude names interactively
+    return todays_participants
+
+
+# Exclude names interactively
+def manuel_exclude(todays_participants):
     while True:
         try:
             not_present = input("Who is not present? :")
@@ -85,26 +93,18 @@ def build_todays_participants():
 
 
 # Generate the speaking order
-def generate_list(filtered_names):
+def generate_list(todays_participants):
     """
     generate the random order of all names given as input,
-    and mark the Screensharing name with a star.
+    and mark the Screening name with a star.
 
-    :param filtered_names:
+    :param todays_participants:
     :return:
     """
-    name_star = random.choice(filtered_names)
+    name_star = random.choice(todays_participants)
 
-    for name in random.sample(filtered_names, len(filtered_names)):
+    for name in random.sample(todays_participants, len(todays_participants)):
         if name == name_star:
             print("*", name)
         else:
             print(name)
-
-
-def read_away_yaml():
-    current_directory = os.path.dirname(os.path.abspath(__file__))
-    file_path = os.path.join(current_directory, "config.yaml")
-    with open(file_path, "r") as config:
-        data = yaml.safe_load(config)
-        return data
