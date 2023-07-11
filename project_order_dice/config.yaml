@@ -1,0 +1,34 @@
+# If a person is away for a longer period of time please put them on is-away: True.
+team_members:
+  - name: Henning
+    is_away: false
+  - name: Steffen
+    is_away: false
+  - name: Jessica
+    is_away: false
+  - name: Sarah
+    is_away: false
+  - name: Hannes
+    is_away: false
+  - name: Mathis
+    is_away: false
+  - name: Adrian
+    is_away: false
+
+# Vacation dates only in this format YYYY-MM-DD (example 2023-06-26).
+vacation:
+  - start_date:
+    end_date:
+    name:
+
+# Here you can exclude people depending on days of the week.
+Monday:
+  - names:
+Tuesday:
+  - names:
+Wednesday:
+  - names:
+Thursday:
+  - names:
+Friday:
+  - names:
