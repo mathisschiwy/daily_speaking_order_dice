@@ -75,7 +75,7 @@ def build_todays_participants(data):
 
 
 # Exclude names interactively
-def manuel_exclude(todays_participants):
+def manual_exclude(todays_participants):
     while True:
         try:
             not_present = input("Who is not present? :")

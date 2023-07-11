@@ -19,7 +19,7 @@ class TestInputFunction(unittest.TestCase):
         todays_participants = functions.build_todays_participants(data)
 
         with patch('builtins.input', side_effect=mock_input):
-            filtered_participants = functions.manuel_exclude(todays_participants)
+            filtered_participants = functions.manual_exclude(todays_participants)
 
             self.assertEqual(filtered_participants, expected_names)
 
@@ -30,7 +30,7 @@ class TestInputFunction(unittest.TestCase):
 
         with patch('builtins.input', side_effect=false_name), \
                 patch('sys.stdout', new_callable=StringIO) as mock_stdout:
-            functions.manuel_exclude(todays_participants)
+            functions.manual_exclude(todays_participants)
 
             self.assertEqual(mock_stdout.getvalue().strip(), expected_output)
 
