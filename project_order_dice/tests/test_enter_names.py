@@ -7,7 +7,7 @@ from functions import generate_list
 import os
 
 current_directory = os.path.dirname(os.path.abspath(__file__))
-file_path = os.path.join(current_directory, "mock.yaml")
+file_path = os.path.join(current_directory, "test_fixture.yaml")
 with open(file_path, "r") as config:
     data = yaml.safe_load(config)
 
