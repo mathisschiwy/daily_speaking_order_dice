@@ -17,3 +17,7 @@ To run the program just navigate to the directory where the program is located a
 ```
 ./main.py
 ```
+To start the unittests run:
+```
+make test
+```
