@@ -17,6 +17,10 @@ To run the program just navigate to the directory where the program is located a
 ```
 ./main.py
 ```
+To install all required dependencies run (This may only work if you have pip installed or are working on an Ubuntu system): 
+```
+make python-package-install
+```
 To start the unittests run:
 ```
 make test
