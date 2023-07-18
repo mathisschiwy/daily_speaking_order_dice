@@ -15,7 +15,11 @@ A tool to create a randomized speaking and board sharing order for agile daily m
 
 To run the program just navigate to the directory where the program is located and run:
 ```
-./main.py
+make run-dice
+```
+To install all required dependencies run (This may only work if you have pip installed or are working on an Ubuntu system): 
+```
+make python-package-install
 ```
 To start the unittests run:
 ```
