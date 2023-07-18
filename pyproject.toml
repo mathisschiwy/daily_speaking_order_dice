@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "daily_speaking_order_dice"
 version = "0.1.0"
-description = "ToDo"
+description = "Daily speaking order dice"
 readme = "README.md"
 repository = "https://github.com/mathisschiwy/daily_speaking_order_dice"
 authors = ["Mathis Schiwy <mathis.schiwy@greenbone.net>"]
